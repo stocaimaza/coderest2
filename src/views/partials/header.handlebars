@@ -3,9 +3,13 @@
 
     <nav>
         <ul>
-            <li><a href="/upload"> Upload </a></li>
-            <li> Mi Perfil </li>
-            <li> El Tinder de Coder </li>
+            {{#if user}}
+                <li><a href="/profile"> Hola {{user.first_name}} </a></li>
+                <li><a href="/logout"> Cerrar Sesión</a></li>
+            {{else}}
+                <li><a href="/login">Iniciar sesión </a></li>
+                <li><a href="/register">Registrarse</a></li>
+            {{/if}}
         </ul>
     </nav>
 </header>

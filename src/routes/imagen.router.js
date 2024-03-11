@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
         }
     })
 
-    res.render("index", {imagenes: nuevoArrayImagenes});
+    res.render("index", {imagenes: nuevoArrayImagenes, user: req.session.user});
 })
 
 
@@ -50,7 +50,15 @@ router.post("/upload", async (req, res) => {
 
 //Ruta para eliminar una imagen 
 
-router.get("/image/:id/delete", async (req, res) => {
+const requireAuth = (req, res, next) => {
+    if(req.session.user) {
+        next();
+    } else {
+        res.redirect("/login");
+    }
+}
+
+router.get("/image/:id/delete", requireAuth, async (req, res) => {
     const {id} = req.params;
     const imagen = await ImagenModel.findByIdAndDelete(id);
     await fs.unlink("./src/public" + imagen.path);

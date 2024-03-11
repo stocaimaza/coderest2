@@ -11,8 +11,12 @@ router.get("/register", (req, res) => {
     res.render("register");
 })
 
-router.get("/profile", (req, res) => {
-    res.render("profile");
+router.get("/", (req, res) => {
+    res.render("main", {user:req.session.user})
 })
+
+// router.get("/profile", (req, res) => {
+//     res.render("profile");
+// })
 
 export default router;

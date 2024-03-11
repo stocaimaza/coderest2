@@ -3,8 +3,12 @@ const app = express();
 const PUERTO = 8080;
 import exphbs from "express-handlebars";
 import multer from "multer";
+import passport from "passport";
+import session from "express-session";
+import { initializePassport } from "./config/passport.config.js";
 import imagenRouter from "./routes/imagen.router.js";
 import viewsRouter from "./routes/views.router.js";
+import sessionRouter from "./routes/session.router.js";
 import "../src/database.js";
 
 //Express-handlebars
@@ -26,12 +30,23 @@ const storage = multer.diskStorage({
     }
 })
 app.use(multer({storage}).single("image"));
+//Session
+app.use(session({
+    secret:"mi_secreto",
+    resave: false,
+    saveUninitialized: false
+}))
+//Passport
+app.use(passport.initialize());
+app.use(passport.session());
+initializePassport();
 
 
 //Rutas
 
 app.use("/", imagenRouter);
 app.use("/", viewsRouter);
+app.use("/", sessionRouter);
 
 
 //Iniciamos el servidor 
